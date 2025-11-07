@@ -5,7 +5,7 @@ import { fetchLeads } from '../api/leads.ts';
 import { LeadFilters } from '../components/LeadFilters.tsx';
 import { LeadTable } from '../components/LeadTable.tsx';
 import { useLeadFilters } from '../hooks/useLeadFilters.ts';
-import type { LeadFilter } from '../types/lead.ts';
+import type { LeadFilter, LeadSummary } from '../types/lead.ts';
 
 const limparStatusTodos = (filtros: LeadFilter) => {
   const { status, ...resto } = filtros;
@@ -20,10 +20,10 @@ export const LeadSearchPage = () => {
 
   const filtrosSanitizados = useMemo(() => limparStatusTodos(filtros), [filtros]);
 
-  const { data: leads = [], isFetching } = useQuery({
+  const { data: leads = [], isFetching } = useQuery<LeadSummary[]>({
     queryKey: ['leads', filtrosSanitizados],
     queryFn: () => fetchLeads(filtrosSanitizados),
-    keepPreviousData: true
+    placeholderData: (previousData) => previousData
   });
 
   const handleSubmit = (novosFiltros: LeadFilter) => {
@@ -35,7 +35,11 @@ export const LeadSearchPage = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-3xl font-semibold text-slate-900">Leads</h2>
+        <p className="mt-1 text-sm text-slate-500">Acompanhe e filtre os leads gerados pelas campanhas.</p>
+      </div>
       <LeadFilters valores={filtros} onSubmit={handleSubmit} onReset={handleReset} />
       <LeadTable leads={leads} carregando={isFetching} />
     </div>

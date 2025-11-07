@@ -6,58 +6,32 @@ export const Layout = () => {
   const { usuario } = useAuth();
 
   return (
-    <div className="app-container" style={{ width: '100%' }}>
-      <header
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '1.5rem 2rem',
-          backgroundColor: '#1d4ed8',
-          color: 'white'
-        }}
-      >
-        <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
-          <h1 style={{ margin: 0, fontSize: '1.5rem' }}>Central de Leads</h1>
+    <div className="min-h-screen w-full bg-slate-100">
+      <header className="flex items-center justify-between bg-blue-600 px-8 py-6 text-white shadow-lg">
+        <Link to="/" className="text-white no-underline">
+          <h1 className="text-2xl font-semibold">Central de Leads</h1>
         </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div className="flex items-center gap-3">
           {usuario ? (
             <>
-              <div style={{ textAlign: 'right' }}>
-                <strong>{usuario.nome}</strong>
-                <div style={{ fontSize: '0.85rem' }}>{usuario.email}</div>
+              <div className="text-right">
+                <strong className="block text-sm font-semibold">{usuario.nome}</strong>
+                <div className="text-xs text-blue-100">{usuario.email}</div>
               </div>
               {usuario.avatarUrl ? (
-                <img
-                  src={usuario.avatarUrl}
-                  alt={usuario.nome}
-                  width={40}
-                  height={40}
-                  style={{ borderRadius: '50%' }}
-                />
+                <img src={usuario.avatarUrl} alt={usuario.nome} className="h-10 w-10 rounded-full object-cover" />
               ) : (
-                <div
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: '50%',
-                    backgroundColor: 'rgba(255,255,255,0.3)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 700
-                  }}
-                >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30 text-sm font-semibold">
                   {usuario.nome.charAt(0)}
                 </div>
               )}
             </>
           ) : (
-            <span>Identificando usuário...</span>
+            <span className="text-sm text-blue-100">Identificando usuário...</span>
           )}
         </div>
       </header>
-      <main>
+      <main className="mx-auto w-full max-w-6xl px-6 py-10">
         <Outlet />
       </main>
     </div>
