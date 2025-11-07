@@ -85,46 +85,64 @@ export const LeadDetailPage = () => {
   );
 
   if (isLoading) {
-    return <p>Carregando informações do lead...</p>;
+    return <p className="text-sm text-slate-500">Carregando informações do lead...</p>;
   }
 
   if (isError || !lead) {
-    return <p>Não foi possível carregar os dados do lead.</p>;
+    return <p className="text-sm text-slate-500">Não foi possível carregar os dados do lead.</p>;
   }
 
   return (
-    <div className="flex gap-md" style={{ alignItems: 'flex-start' }}>
-      <section className="card" style={{ flex: 2 }}>
-        <header className="flex flex-between">
+    <div className="flex flex-col gap-6 lg:flex-row">
+      <section className="flex-1 rounded-2xl bg-white p-6 shadow-lg ring-1 ring-slate-900/5">
+        <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 style={{ marginTop: 0 }}>{lead.nome}</h2>
-            <p className="text-muted">{lead.email} • {lead.telefone}</p>
+            <h2 className="text-2xl font-semibold text-slate-900">{lead.nome}</h2>
+            <p className="text-sm text-slate-500">
+              {lead.email} • {lead.telefone}
+            </p>
           </div>
           <StatusBadge status={lead.status} />
         </header>
 
-        <div className="mt-md">
-          <strong>Empresa:</strong> {lead.empresa}
-        </div>
-        <div className="mt-md">
-          <strong>Campanha:</strong> {lead.campanha}
-        </div>
-        <div className="mt-md">
-          <strong>Produto de interesse:</strong> {lead.produtoInteresse}
-        </div>
-        <div className="mt-md">
-          <strong>Valor estimado:</strong> {formatCurrency(lead.valorEstimado)}
-        </div>
+        <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Empresa</dt>
+            <dd className="text-base text-slate-700">{lead.empresa}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Campanha</dt>
+            <dd className="text-base text-slate-700">{lead.campanha}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Produto de interesse</dt>
+            <dd className="text-base text-slate-700">{lead.produtoInteresse}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Valor estimado</dt>
+            <dd className="text-base text-slate-700">{formatCurrency(lead.valorEstimado)}</dd>
+          </div>
+        </dl>
 
-        <form onSubmit={leadForm.handleSubmit(handleSubmitLead)} className="mt-lg">
-          <div className="filters-grid">
+        <form
+          onSubmit={leadForm.handleSubmit(handleSubmitLead)}
+          className="mt-8 rounded-2xl border border-slate-200 bg-slate-50/80 p-6"
+        >
+          <h3 className="text-lg font-semibold text-slate-900">Atualizar lead</h3>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
             <Controller
               name="status"
               control={leadForm.control}
               render={({ field }) => (
-                <div>
-                  <label htmlFor="status">Status</label>
-                  <select id="status" {...field}>
+                <div className="space-y-2">
+                  <label htmlFor="status" className="text-sm font-semibold text-slate-700">
+                    Status
+                  </label>
+                  <select
+                    id="status"
+                    className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                    {...field}
+                  >
                     <option value="novo">Novo</option>
                     <option value="em_andamento">Em andamento</option>
                     <option value="convertido">Convertido</option>
@@ -137,55 +155,72 @@ export const LeadDetailPage = () => {
               name="observacoesInternas"
               control={leadForm.control}
               render={({ field }) => (
-                <div>
-                  <label htmlFor="observacoesInternas">Observações internas</label>
-                  <textarea id="observacoesInternas" rows={4} placeholder="Notas internas e próximos passos" {...field} />
+                <div className="space-y-2 md:col-span-2">
+                  <label htmlFor="observacoesInternas" className="text-sm font-semibold text-slate-700">
+                    Observações internas
+                  </label>
+                  <textarea
+                    id="observacoesInternas"
+                    rows={4}
+                    placeholder="Notas internas e próximos passos"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                    {...field}
+                  />
                 </div>
               )}
             />
           </div>
-          <button type="submit" className="mt-md" disabled={atualizarLeadMutation.isPending}>
+          <button
+            type="submit"
+            className="mt-6 inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={atualizarLeadMutation.isPending}
+          >
             Salvar alterações
           </button>
         </form>
       </section>
 
-      <aside className="card" style={{ flex: 1 }}>
-        <h3 style={{ marginTop: 0 }}>Linha do tempo</h3>
+      <aside className="flex-1 rounded-2xl bg-white p-6 shadow-lg ring-1 ring-slate-900/5">
+        <h3 className="text-lg font-semibold text-slate-900">Linha do tempo</h3>
         {timelineOrdenado.length ? (
-          <ul style={{ listStyle: 'none', padding: 0 }}>
+          <ul className="mt-4 space-y-4">
             {timelineOrdenado.map((item) => (
-              <li key={item.id} style={{ marginBottom: '1rem' }}>
-                <div style={{ fontWeight: 600 }}>{item.descricao}</div>
-                <div className="comment-date">
+              <li key={item.id} className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
+                <div className="font-semibold text-slate-800">{item.descricao}</div>
+                <div className="text-xs text-slate-500">
                   {new Date(item.criadoEm).toLocaleString('pt-BR')} • {item.criadoPor}
                 </div>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-muted">Ainda não há eventos registrados.</p>
+          <p className="mt-2 text-sm text-slate-500">Ainda não há eventos registrados.</p>
         )}
 
-        <section className="mt-lg">
-          <header className="flex flex-between" style={{ alignItems: 'center' }}>
-            <h3 style={{ margin: 0 }}>Comentários</h3>
+        <section className="mt-8">
+          <header className="mb-4 flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-slate-900">Comentários</h3>
             <button
               type="button"
               onClick={() => setComentarioAberto((prev) => !prev)}
-              style={{ backgroundColor: '#1f2937' }}
+              className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
             >
               {comentarioAberto ? 'Cancelar' : 'Adicionar'}
             </button>
           </header>
           {comentarioAberto && (
-            <form onSubmit={comentarioForm.handleSubmit(handleSubmitComentario)} className="mt-md">
+            <form onSubmit={comentarioForm.handleSubmit(handleSubmitComentario)} className="space-y-3">
               <textarea
                 placeholder="Escreva um novo comentário"
                 rows={3}
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
                 {...comentarioForm.register('conteudo', { required: true })}
               />
-              <button type="submit" className="mt-md" disabled={adicionarComentarioMutation.isPending}>
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60"
+                disabled={adicionarComentarioMutation.isPending}
+              >
                 Registrar comentário
               </button>
             </form>

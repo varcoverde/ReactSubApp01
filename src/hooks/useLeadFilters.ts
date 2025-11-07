@@ -18,12 +18,27 @@ export const useLeadFilters = () => {
 
   const definirFiltros = (novosFiltros: LeadFilter) => {
     setFiltros(() => {
-      const filtrados = Object.entries(novosFiltros).reduce<LeadFilter>((acc, [key, value]) => {
-        if (value !== undefined && value !== '') {
-          acc[key as keyof LeadFilter] = value as LeadFilter[keyof LeadFilter];
-        }
-        return acc;
-      }, {} as LeadFilter);
+      const filtrados: LeadFilter = {};
+
+      if (novosFiltros.busca) {
+        filtrados.busca = novosFiltros.busca;
+      }
+
+      if (novosFiltros.status) {
+        filtrados.status = novosFiltros.status;
+      }
+
+      if (novosFiltros.origem) {
+        filtrados.origem = novosFiltros.origem;
+      }
+
+      if (novosFiltros.dataInicial) {
+        filtrados.dataInicial = novosFiltros.dataInicial;
+      }
+
+      if (novosFiltros.dataFinal) {
+        filtrados.dataFinal = novosFiltros.dataFinal;
+      }
 
       return { ...filtrosPadrao, ...filtrados };
     });
