@@ -4,6 +4,7 @@ using LeadApi.Extensions;
 using LeadApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +17,10 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod());
 });
 
+var databasePath = Path.Combine(AppContext.BaseDirectory, "leads.db");
+
 builder.Services.AddDbContext<LeadContext>(options =>
-    options.UseInMemoryDatabase("LeadsDb"));
+    options.UseSqlite($"Data Source={databasePath}"));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
