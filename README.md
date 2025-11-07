@@ -23,7 +23,16 @@ Subaplicação React para gestão de leads, projetada para ser hospedada dentro 
    VITE_API_URL=https://nome-do-cliente.dominio.com.br/api
    ```
 
-3. Execute o projeto em modo desenvolvimento:
+3. (Opcional) Inicie a API de referência em memória:
+
+   ```bash
+   dotnet restore backend/LeadApi/LeadApi.csproj
+   dotnet run --project backend/LeadApi/LeadApi.csproj
+   ```
+
+   A API ficará disponível em `http://localhost:5000` e fornece os endpoints utilizados pela aplicação React (`/leads`, `/leads/{id}`, etc.).
+
+4. Execute o projeto em modo desenvolvimento:
 
    ```bash
    npm run dev
@@ -31,7 +40,7 @@ Subaplicação React para gestão de leads, projetada para ser hospedada dentro 
 
    O servidor iniciará em `http://localhost:5173/apps/subapp01`.
 
-4. Gere o build para produção:
+5. Gere o build para produção:
 
    ```bash
    npm run build
