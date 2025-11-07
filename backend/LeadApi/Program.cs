@@ -17,8 +17,8 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod());
 });
 
-var databasePath = Path.Combine(AppContext.BaseDirectory, "leads.db");
-
+// var databasePath = Path.Combine(AppContext.BaseDirectory, "leads.db");
+var databasePath = "C:\\Projetos\\neo\\repos\\ReactSubApp01\\backend\\LeadApi\\leads.db";
 builder.Services.AddDbContext<LeadContext>(options =>
     options.UseSqlite($"Data Source={databasePath}"));
 

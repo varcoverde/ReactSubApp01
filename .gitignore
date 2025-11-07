@@ -6,3 +6,9 @@ bin/
 obj/
 
 node_modules/
+
+backend/LeadApi/leads.db
+
+backend/LeadApi/leads.db-shm
+
+backend/LeadApi/leads.db-wal
